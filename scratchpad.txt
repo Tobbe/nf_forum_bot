@@ -1,0 +1,388 @@
+#!/usr/bin/env node
+
+// https://github.com/codemanki/cloudscraper/issues/246
+
+var cloudscraper = require('cloudscraper');
+
+//
+// Option 1
+//
+// npm install tough-cookie
+var tough = require('tough-cookie');
+var jar = new tough.CookieJar();
+var cloudscraper = require('cloudscraper').defaults({ jar });
+
+
+//
+// Option 2
+//
+// npm install --save tough-cookie-file-store
+var CookieStore = require('tough-cookie-file-store');
+var jar = cloudscraper.jar(new CookieStore('./cookie.json'));
+
+/*
+  // It's recommended to reuse the same headers.
+  var fs = require('fs');
+  var headers = cloudscraper.defaultParams.headers;
+  fs.writeFileSync('./headers.json', JSON.stringify(headers), 'utf-8');
+*/
+
+var uri = process.argv[2];
+
+cloudscraper = cloudscraper.defaults({ jar, headers: require('./headers') });
+cloudscraper.get(uri).then(console.log).catch(console.error);
+
+
+
+
+var cloudscraper = require('cloudscraper');
+
+cloudscraper
+    .get('https://rebellion.nerdfitness.com/login/')
+    .then(htmlString => {
+        console.log('regex match', htmlString.match(/<input .*?name="csrfKey".*?>/));
+    })
+    .catch(e => {
+        console.log('error');
+        console.log('e', e);
+    });
+
+
+const cloudscraper = require('cloudscraper');
+const fs = require('fs');
+
+const json = JSON.stringify(cloudscraper.defaultParams.headers);
+fs.writeFileSync('./headers.json', json, 'utf-8');
+
+
+
+// Same usage as https://github.com/request/request
+const cloudscraper = require('cloudscraper').defaults({ jar });
+
+
+
+
+var cookieStore = require('tough-cookie-file-store');
+var CookieJar = require('tough-cookie').CookieJar;
+var jar = new CookieJar(new cookieStore('./cookie.json'));
+ 
+/* check if cookie is empty or expired */
+var cookieStore	= require('tough-cookie-file-store');
+var cookieInstance = new cookieStore('./cookie.json');
+cookieInstance.isExpired() // will return True if the cookie is expired
+cookieInstance.isEmpty() // will return True if cookie is empty
+ 
+/* request example */
+var cookieStore = require('tough-cookie-file-store');
+var j = cloudscraper.jar(new cookieStore('./cookie.json'));
+cloudscraper = cloudscraper.defaults({ jar : j })
+cloudscraper('http://www.google.com', function() {
+  cloudscraper('http://images.google.com')
+})
+
+
+/*const request = require('superagent');
+
+const agent = request.agent();
+
+agent
+    .get('https://rebellion.nerdfitness.com/login/')
+    .then(page => {
+        console.log('page', page);
+    })
+    .catch(e => {
+        console.log('error', e);
+    });
+
+
+
+const https = require('https');
+
+https.get('https://rebellion.nerdfitness.com/login/', (resp) => {
+  let data = '';
+
+  // A chunk of data has been recieved.
+  resp.on('data', (chunk) => {
+      console.log('got some data');
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+      console.log('end');
+    console.log(data);
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+});
+
+
+
++((!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![]+[])+(!+[]+!![]+!![])+(!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![])+(+[])+(!+[]+!![]+!![]+!![])+(+!![])+(!+[]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![]+!![]+!![])+(+!![]))/+((!+[]+!![]+!![]+!![]+!![]+!![]+[])+(!+[]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![])+(+!![])+(!+[]+!![]+!![]+!![]+!![]+!![])+(!+[]+!![]+!![]+!![]+!![]+!![]))
+
+*/
+// agent
+//     .post('https://rebellion.nerdfitness.com/index.php?/login/')
+//     .then(() => {
+//         return agent.get('/cookied-page');
+//     });
+
+// form data
+/*
+
+csrfKey: 2c8b78161b70f964e7e87edfc7195544 auth: user@email.com password: super_secret remember_me: 1 _processLogin: usernamepassword _processLogin: usernamepassword
+
+*/
+
+
+// fetch("https://rebellion.nerdfitness.com/login/", {
+//    "credentials":"include",
+//    "headers":{
+//       "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+//       "accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5",
+//       "cache-control":"no-cache",
+//       "pragma":"no-cache",
+//       "sec-fetch-dest":"document",
+//       "sec-fetch-mode":"navigate",
+//       "sec-fetch-site":"none",
+//       "sec-fetch-user":"?1",
+//       "upgrade-insecure-requests":"1"
+//    },
+//    "referrer":"https://rebellion.nerdfitness.com/",
+//    "referrerPolicy":"no-referrer-when-downgrade",
+//    "body":null,
+//    "method":"GET",
+//    "mode":"no-cors"
+// })
+//     .then(r => r.text())
+//     .then(j => console.log('j', j));
+
+
+
+
+
+
+// New comment
+
+
+<form accept-charset="utf-8" class="ipsForm ipsForm_vertical" action="https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/&amp;tab=comments" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="commentform_115008_submitted" value="1">
+    <input type="hidden" name="csrfKey" value="9d04ae0a7391c3d75bf4a099b78cdda7">
+    <input type="hidden" name="_contentReply" value="1">
+    <input type="hidden" name="MAX_FILE_SIZE" value="25165824">
+    <input type="hidden" name="plupload" value="ecc993a3f880fd256ac8eb9fd2e9d8b3">
+    <div class="ipsComposeArea ipsComposeArea_withPhoto ipsClearfix ipsContained">
+        <div class="ipsPos_left ipsResponsive_hidePhone ipsResponsive_block">
+            <a href="https://rebellion.nerdfitness.com/index.php?/profile/74540-tobbe/" data-ipshover="" data-ipshover-target="https://rebellion.nerdfitness.com/index.php?/profile/74540-tobbe/&amp;do=hovercard" class="ipsUserPhoto ipsUserPhoto_small" title="Go to Tobbe's profile">
+                <img src="https://rebellion.nerdfitness.com/uploads/monthly_2018_07/nerd_roots_small.thumb.png.e883de5f1a227a9baed45c73833d5bc3.png" alt="Tobbe">
+            </a>
+        </div>
+        <div class="ipsComposeArea_editor">
+            <div class="ipsType_normal ipsType_richText ipsType_break" data-ipseditor="" data-ipseditor-controller="https://rebellion.nerdfitness.com/index.php?app=core&amp;module=system&amp;controller=editor" data-ipseditor-minimized="" data-ipseditor-toolbars="{&quot;desktop&quot;:[{&quot;name&quot;:&quot;row1&quot;,&quot;items&quot;:[&quot;Bold&quot;,&quot;Italic&quot;,&quot;Underline&quot;,&quot;Strike&quot;,&quot;-&quot;,&quot;ipsLink&quot;,&quot;Ipsquote&quot;,&quot;ipsCode&quot;,&quot;ipsEmoticon&quot;,&quot;-&quot;,&quot;BulletedList&quot;,&quot;NumberedList&quot;,&quot;-&quot;,&quot;JustifyLeft&quot;,&quot;JustifyCenter&quot;,&quot;JustifyRight&quot;,&quot;-&quot;,&quot;TextColor&quot;,&quot;FontSize&quot;,&quot;-&quot;,&quot;ipsPreview&quot;,&quot;Ipsspoiler&quot;]},&quot;\/&quot;],&quot;tablet&quot;:[{&quot;name&quot;:&quot;row1&quot;,&quot;items&quot;:[&quot;Bold&quot;,&quot;Italic&quot;,&quot;Underline&quot;,&quot;-&quot;,&quot;ipsLink&quot;,&quot;Ipsquote&quot;,&quot;ipsEmoticon&quot;,&quot;-&quot;,&quot;BulletedList&quot;,&quot;NumberedList&quot;,&quot;-&quot;,&quot;ipsPreview&quot;,&quot;Ipsspoiler&quot;]},&quot;\/&quot;],&quot;phone&quot;:[{&quot;name&quot;:&quot;row1&quot;,&quot;items&quot;:[&quot;Bold&quot;,&quot;Italic&quot;,&quot;Underline&quot;,&quot;-&quot;,&quot;ipsEmoticon&quot;,&quot;-&quot;,&quot;ipsLink&quot;,&quot;-&quot;,&quot;ipsPreview&quot;]},&quot;\/&quot;]}" data-ipseditor-extraplugins="" data-ipseditor-postkey="a56fc37da1802d49e4edaa1175ed8bd8" data-ipseditor-autosavekey="reply-forums/forums-115008" data-ipseditor-skin="moono" data-ipseditor-name="topic_comment_115008" data-ipseditor-pastebehaviour="rich" data-ipseditor-ipsplugins="ipsautolink,ipsautosave,ipsctrlenter,ipscode,ipscontextmenu,ipsemoticon,ipsimage,ipslink,ipsmentions,ipspage,ipspaste,ipspreview,ipsquote,ipsspoiler,ipsautogrow,ipssource,removeformat" id="ips_uid_3022_3">
+                <div data-role="editorComposer" class="ipsContained">
+                    <noscript>
+                        <textarea name="topic_comment_115008_noscript" rows="15"></textarea>
+                    </noscript>
+                    <div class="ipsHide norewrite" data-role="mainEditorArea" style="display: block;">
+                        <textarea name="topic_comment_115008" data-role="contentEditor" class="ipsHide" tabindex="1" style="visibility: hidden; display: none;"></textarea>
+                        <div id="cke_topic_comment_115008" class="cke_1 cke cke_reset cke_chrome cke_editor_topic_comment_115008 cke_ltr cke_browser_webkit" dir="ltr" lang="en" role="application" aria-labelledby="cke_topic_comment_115008_arialbl"><span id="cke_topic_comment_115008_arialbl" class="cke_voice_label">Enter your text; hold ctrl and right click for more options</span>
+                            <div class="cke_inner cke_reset" role="presentation"><span id="cke_1_top" class="cke_top cke_reset_all" role="presentation" style="height: auto; user-select: none;"><span id="cke_9" class="cke_voice_label">Editor toolbars</span><span id="cke_1_toolbox" class="cke_toolbox" role="group" aria-labelledby="cke_9" onmousedown="return false;"><span id="cke_11" class="cke_toolbar cke_toolbar_last" aria-labelledby="cke_11_label" role="toolbar"><span id="cke_11_label" class="cke_voice_label">row1</span><span class="cke_toolbar_start"></span><span class="cke_toolgroup" role="presentation"><a id="cke_12" class="cke_button cke_button__bold cke_button_off" href="javascript:void('Bold')" title="Bold (Ctrl+B)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_12_label" aria-describedby="cke_12_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(0,event);" onfocus="return CKEDITOR.tools.callFunction(1,event);" onclick="CKEDITOR.tools.callFunction(2,this);return false;"><span class="cke_button_icon cke_button__bold_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 0px;background-size:auto;">&nbsp;</span><span id="cke_12_label" class="cke_button_label cke_button__bold_label" aria-hidden="false">Bold</span><span id="cke_12_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+B</span></a><a id="cke_13" class="cke_button cke_button__italic cke_button_off" href="javascript:void('Italic')" title="Italic (Ctrl+I)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_13_label" aria-describedby="cke_13_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(3,event);" onfocus="return CKEDITOR.tools.callFunction(4,event);" onclick="CKEDITOR.tools.callFunction(5,this);return false;"><span class="cke_button_icon cke_button__italic_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -24px;background-size:auto;">&nbsp;</span><span id="cke_13_label" class="cke_button_label cke_button__italic_label" aria-hidden="false">Italic</span><span id="cke_13_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+I</span></a><a id="cke_14" class="cke_button cke_button__underline cke_button_off" href="javascript:void('Underline')" title="Underline (Ctrl+U)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_14_label" aria-describedby="cke_14_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(6,event);" onfocus="return CKEDITOR.tools.callFunction(7,event);" onclick="CKEDITOR.tools.callFunction(8,this);return false;"><span class="cke_button_icon cke_button__underline_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -120px;background-size:auto;">&nbsp;</span><span id="cke_14_label" class="cke_button_label cke_button__underline_label" aria-hidden="false">Underline</span><span id="cke_14_description" class="cke_button_label" aria-hidden="false">Keyboard shortcut Ctrl+U</span></a><a id="cke_15" class="cke_button cke_button__strike cke_button_off" href="javascript:void('Strikethrough')" title="Strikethrough" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_15_label" aria-describedby="cke_15_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(9,event);" onfocus="return CKEDITOR.tools.callFunction(10,event);" onclick="CKEDITOR.tools.callFunction(11,this);return false;"><span class="cke_button_icon cke_button__strike_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -48px;background-size:auto;">&nbsp;</span><span id="cke_15_label" class="cke_button_label cke_button__strike_label" aria-hidden="false">Strikethrough</span><span id="cke_15_description" class="cke_button_label" aria-hidden="false"></span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_16" class="cke_button cke_button__ipslink cke_button_off" href="javascript:void('Link')" title="Link" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_16_label" aria-describedby="cke_16_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(12,event);" onfocus="return CKEDITOR.tools.callFunction(13,event);" onclick="CKEDITOR.tools.callFunction(14,this);return false;"><span class="cke_button_icon cke_button__ipslink_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -528px;background-size:auto;">&nbsp;</span><span id="cke_16_label" class="cke_button_label cke_button__ipslink_label" aria-hidden="false">Link</span><span id="cke_16_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_17" class="cke_button cke_button__ipsquote cke_button_off" href="javascript:void('Quote')" title="Quote" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_17_label" aria-describedby="cke_17_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(15,event);" onfocus="return CKEDITOR.tools.callFunction(16,event);" onclick="CKEDITOR.tools.callFunction(17,this);return false;"><span class="cke_button_icon cke_button__ipsquote_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -672px;background-size:auto;">&nbsp;</span><span id="cke_17_label" class="cke_button_label cke_button__ipsquote_label" aria-hidden="false">Quote</span><span id="cke_17_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_18" class="cke_button cke_button__ipscode cke_button_off" href="javascript:void('Code')" title="Code" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_18_label" aria-describedby="cke_18_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(18,event);" onfocus="return CKEDITOR.tools.callFunction(19,event);" onclick="CKEDITOR.tools.callFunction(20,this);return false;"><span class="cke_button_icon cke_button__ipscode_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -432px;background-size:auto;">&nbsp;</span><span id="cke_18_label" class="cke_button_label cke_button__ipscode_label" aria-hidden="false">Code</span><span id="cke_18_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_19" class="cke_button cke_button__ipsemoticon cke_button_off" href="javascript:void('Emoji')" title="Emoji" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_19_label" aria-describedby="cke_19_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(21,event);" onfocus="return CKEDITOR.tools.callFunction(22,event);" onclick="CKEDITOR.tools.callFunction(23,this);return false;"><span class="cke_button_icon cke_button__ipsemoticon_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -456px;background-size:auto;">&nbsp;</span><span id="cke_19_label" class="cke_button_label cke_button__ipsemoticon_label" aria-hidden="false">Emoji</span><span id="cke_19_description" class="cke_button_label" aria-hidden="false"></span></a><a class="cke_button cke_button_off" title="giphy" role="button" id="giphy_button">gif</a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_20" class="cke_button cke_button__bulletedlist cke_button_off" href="javascript:void('Insert/Remove Bulleted List')" title="Insert/Remove Bulleted List" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_20_label" aria-describedby="cke_20_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(24,event);" onfocus="return CKEDITOR.tools.callFunction(25,event);" onclick="CKEDITOR.tools.callFunction(26,this);return false;"><span class="cke_button_icon cke_button__bulletedlist_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -840px;background-size:auto;">&nbsp;</span><span id="cke_20_label" class="cke_button_label cke_button__bulletedlist_label" aria-hidden="false">Insert/Remove Bulleted List</span><span id="cke_20_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_21" class="cke_button cke_button__numberedlist cke_button_off" href="javascript:void('Insert/Remove Numbered List')" title="Insert/Remove Numbered List" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_21_label" aria-describedby="cke_21_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(27,event);" onfocus="return CKEDITOR.tools.callFunction(28,event);" onclick="CKEDITOR.tools.callFunction(29,this);return false;"><span class="cke_button_icon cke_button__numberedlist_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -888px;background-size:auto;">&nbsp;</span><span id="cke_21_label" class="cke_button_label cke_button__numberedlist_label" aria-hidden="false">Insert/Remove Numbered List</span><span id="cke_21_description" class="cke_button_label" aria-hidden="false"></span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_22" class="cke_button cke_button__justifyleft cke_button_on" href="javascript:void('Align Left')" title="Align Left" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_22_label" aria-describedby="cke_22_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(30,event);" onfocus="return CKEDITOR.tools.callFunction(31,event);" onclick="CKEDITOR.tools.callFunction(32,this);return false;" aria-pressed="true"><span class="cke_button_icon cke_button__justifyleft_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -768px;background-size:auto;">&nbsp;</span><span id="cke_22_label" class="cke_button_label cke_button__justifyleft_label" aria-hidden="false">Align Left</span><span id="cke_22_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_23" class="cke_button cke_button__justifycenter cke_button_off" href="javascript:void('Center')" title="Center" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_23_label" aria-describedby="cke_23_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(33,event);" onfocus="return CKEDITOR.tools.callFunction(34,event);" onclick="CKEDITOR.tools.callFunction(35,this);return false;"><span class="cke_button_icon cke_button__justifycenter_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -744px;background-size:auto;">&nbsp;</span><span id="cke_23_label" class="cke_button_label cke_button__justifycenter_label" aria-hidden="false">Center</span><span id="cke_23_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_24" class="cke_button cke_button__justifyright cke_button_off" href="javascript:void('Align Right')" title="Align Right" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_24_label" aria-describedby="cke_24_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(36,event);" onfocus="return CKEDITOR.tools.callFunction(37,event);" onclick="CKEDITOR.tools.callFunction(38,this);return false;"><span class="cke_button_icon cke_button__justifyright_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -792px;background-size:auto;">&nbsp;</span><span id="cke_24_label" class="cke_button_label cke_button__justifyright_label" aria-hidden="false">Align Right</span><span id="cke_24_description" class="cke_button_label" aria-hidden="false"></span></a><span class="cke_toolbar_separator" role="separator"></span><a id="cke_25" class="cke_button cke_button__textcolor cke_button_off cke_button_expandable" href="javascript:void('Text Color')" title="Text Color" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_25_label" aria-describedby="cke_25_description" aria-haspopup="listbox" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(39,event);" onfocus="return CKEDITOR.tools.callFunction(40,event);" onclick="CKEDITOR.tools.callFunction(41,this);return false;" aria-expanded="false"><span class="cke_button_icon cke_button__textcolor_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -312px;background-size:auto;">&nbsp;</span><span id="cke_25_label" class="cke_button_label cke_button__textcolor_label" aria-hidden="false">Text Color</span><span id="cke_25_description" class="cke_button_label" aria-hidden="false"></span><span class="cke_button_arrow"></span></a></span><span id="cke_10" class="cke_combo cke_combo__fontsize cke_combo_off" role="presentation"><span id="cke_10_label" class="cke_combo_label">Size</span><a class="cke_combo_button" title="Font Size" tabindex="-1" href="javascript:void('Font Size')" hidefocus="true" role="button" aria-labelledby="cke_10_label" aria-haspopup="listbox" onkeydown="return CKEDITOR.tools.callFunction(43,event,this);" onfocus="return CKEDITOR.tools.callFunction(44,event);" onclick="CKEDITOR.tools.callFunction(42,this);return false;"><span id="cke_10_text" class="cke_combo_text cke_combo_inlinelabel">Size</span><span class="cke_combo_open"><span class="cke_combo_arrow"></span></span></a></span><span class="cke_toolgroup" role="presentation"><a id="cke_26" class="cke_button cke_button__ipspreview cke_button_off" href="javascript:void('Preview')" title="Preview" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_26_label" aria-describedby="cke_26_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(45,event);" onfocus="return CKEDITOR.tools.callFunction(46,event);" onclick="CKEDITOR.tools.callFunction(47,this);return false;"><span class="cke_button_icon cke_button__ipspreview_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -648px;background-size:auto;">&nbsp;</span><span id="cke_26_label" class="cke_button_label cke_button__ipspreview_label" aria-hidden="false">Preview</span><span id="cke_26_description" class="cke_button_label" aria-hidden="false"></span></a><a id="cke_27" class="cke_button cke_button__ipsspoiler cke_button_off" href="javascript:void('Spoiler')" title="Spoiler" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_27_label" aria-describedby="cke_27_description" aria-haspopup="false" aria-disabled="false" onkeydown="return CKEDITOR.tools.callFunction(48,event);" onfocus="return CKEDITOR.tools.callFunction(49,event);" onclick="CKEDITOR.tools.callFunction(50,this);return false;"><span class="cke_button_icon cke_button__ipsspoiler_icon" style="background-image:url('//rebellion.nerdfitness.com/applications/core/interface/ckeditor/ckeditor/plugins/icons.png?t=JBK1');background-position:0 -696px;background-size:auto;">&nbsp;</span><span id="cke_27_label" class="cke_button_label cke_button__ipsspoiler_label" aria-hidden="false">Spoiler</span><span id="cke_27_description" class="cke_button_label" aria-hidden="false"></span></a></span><span class="cke_toolbar_end"></span></span><span class="cke_toolbar_break"></span></span</span>
+                                <div id="cke_1_contents" class="cke_contents cke_reset" role="presentation" style="height: auto;">
+                                    <div class="cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr" hidefocus="true" contenteditable="true" tabindex="1" spellcheck="true" role="textbox" aria-multiline="true" aria-label="Enter your text; hold ctrl and right click for more options" title="Enter your text; hold ctrl and right click for more options" data-gramm="false" style="max-height: 779px;">
+                                        <p>Foo bar?</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul class="ipsToolList ipsToolList_horizontal ipsClear ipsClearfix ipsJS_hide" data-ipseditor-toollist="" style="display: block;">
+                <li class="ipsPos_left ipsResponsive_noFloat ipsComposeArea_formControl ipsType_small">
+                    <input type="hidden" name="topic_auto_follow" value="0">
+                    <input type="checkbox" name="topic_auto_follow_checkbox" value="1" id="check_auto_follow_toggle" data-toggle-id="auto_follow_toggle" checked="" aria-checked="true" data-ipstoggle="" style="display: none;"> <span class="ipsToggle ipsToggle_on" id="check_auto_follow_toggle_wrapper" tabindex="0" role="switch" aria-checked="true">  <span data-role="status"></span> </span>
+                    <label for="check_auto_follow_toggle">
+                        Notify me of replies
+                    </label>
+                </li>
+                <li class="ipsPos_left ipsResponsive_noFloat ipsComposeArea_formControl ipsType_small">
+                    <input type="hidden" name="hide" value="0">
+                    <input type="checkbox" name="hide_checkbox" value="1" id="check_hide" data-toggle-id="hide" aria-checked="false" data-ipstoggle="" style="display: none;"> <span class="ipsToggle ipsToggle_off" id="check_hide_wrapper" tabindex="0" role="switch" aria-checked="false">  <span data-role="status"></span> </span>
+                    <label for="check_hide">
+                        Hide
+                    </label>
+                </li>
+                <li>
+                    <button type="submit" class="ipsButton ipsButton_primary" tabindex="2" accesskey="s" role="button">Submit Reply</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>
+
+
+
+fetch(
+    "https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/3/",
+    {"credentials":"include","headers":{"accept":"*/*","accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5","cache-control":"no-cache","content-type":"application/x-www-form-urlencoded; charset=UTF-8","pragma":"no-cache","sec-fetch-dest":"empty","sec-fetch-mode":"cors","sec-fetch-site":"same-origin","x-requested-with":"XMLHttpRequest"},"referrer":"https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/3/","referrerPolicy":"no-referrer-when-downgrade","body":"commentform_115008_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&_contentReply=1&MAX_FILE_SIZE=25165824&plupload=84f8c541ab032cfd1f5a246b1cc4f8c8&topic_comment_115008=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+sunday%2Fmonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it!%0D%0A%3C%2Fp%3E%0D%0A&topic_comment_115008_upload=961ef02a8796f15c1da654800ef61702&topic_auto_follow=0&topic_auto_follow_checkbox=1&hide=0&currentPage=3&_lastSeenID=2546066","method":"POST","mode":"cors"})
+    .then(response => response.text())
+    .then(text => {
+      console.log(text);
+    });
+
+    {
+      "credentials":"include",
+      "headers":{
+         "accept":"*/*",
+         "accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5",
+         "cache-control":"no-cache",
+         "content-type":"application/x-www-form-urlencoded; charset=UTF-8",
+         "pragma":"no-cache",
+         "sec-fetch-dest":"empty",
+         "sec-fetch-mode":"cors",
+         "sec-fetch-site":"same-origin",
+         "x-requested-with":"XMLHttpRequest"
+      },
+      "referrer":"https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/3/",
+      "referrerPolicy":"no-referrer-when-downgrade",
+      "body":"commentform_115008_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&_contentReply=1&MAX_FILE_SIZE=25165824&plupload=84f8c541ab032cfd1f5a246b1cc4f8c8&topic_comment_115008=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+sunday%2Fmonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it!%0D%0A%3C%2Fp%3E%0D%0A&topic_comment_115008_upload=961ef02a8796f15c1da654800ef61702&topic_auto_follow=0&topic_auto_follow_checkbox=1&hide=0&currentPage=3&_lastSeenID=2546066",
+      "method":"POST",
+      "mode":"cors"
+   }
+
+
+commentform_115008_submitted: 1
+csrfKey: 9d04ae0a7391c3d75bf4a099b78cdda7
+_contentReply: 1
+MAX_FILE_SIZE: 25165824
+plupload: 84f8c541ab032cfd1f5a246b1cc4f8c8
+topic_comment_115008: <p>
+	This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at sunday/monday? I&#39;d be very happy to set up a new thread for it!
+</p>
+topic_comment_115008_upload: 961ef02a8796f15c1da654800ef61702
+topic_auto_follow: 0
+topic_auto_follow_checkbox: 1
+hide: 0
+currentPage: 3
+_lastSeenID: 25
+
+
+
+
+
+
+
+fetch("https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077",
+{
+  "credentials":"include",
+  "headers":{"accept":"text/html, */*; q=0.01","accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5","cache-control":"no-cache","content-type":"application/x-www-form-urlencoded; charset=UTF-8","pragma":"no-cache","sec-fetch-dest":"empty","sec-fetch-mode":"cors","sec-fetch-site":"same-origin","x-requested-with":"XMLHttpRequest"},
+  "referrer":"https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/&tab=comments","referrerPolicy":"no-referrer-when-downgrade",
+  "body":"form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=81892cbdd4b0031181551cdb28efb4c2&comment_value=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it!%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0",
+  "method":"POST",
+  "mode":"cors"});
+
+
+form_submitted: 1
+csrfKey: 9d04ae0a7391c3d75bf4a099b78cdda7
+MAX_FILE_SIZE: 25165824
+plupload: 81892cbdd4b0031181551cdb28efb4c2
+comment_value: <p>
+	This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it!
+</p>
+comment_value_upload: e3ea01296cfe262e87f936bc3326cffe
+comment_edit_reason: 
+comment_log_edit: 0
+
+
+fetch("https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077", {
+    "credentials":"include",
+    "headers": {"content-type":"application/x-www-form-urlencoded; charset=UTF-8"},
+    "body":"form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&comment_value=This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it!",
+    "method":"POST"
+});
+
+
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'authority: rebellion.nerdfitness.com' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_ebsGlobalMessage_dismissed=1; ips4_device_key=9f187ab2de76d1b8dd381e7105bc8727; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; _ga=GA1.2.103037421.1538498744; _ga=GA1.3.103037421.1538498744; __cfduid=d28f2fac0ad5c9ddf68a44285773126cd1562662135; wordpress_logged_in_c32dc14891d50c1d65670882ea4f6cf5=tobbe%7C1608700843%7CP6KzK1VspbHNUeN1tdQSwYhTtlzLkuKhGoB8CPwCgEv%7C815d29cf9d39ed16de18c2e1a86b1cd8d9f7665d3348eaeb4522bbc8f7ff7baa; _gcl_au=1.1.1499045554.1577628994; _fbp=fb.1.1577628994723.928864349; ips4_loggedIn=1; sbjs_current_add=fd%3D2020-01-29%2010%3A06%3A54%7C%7C%7Cep%3Dhttps%3A%2F%2Fwww.nerdfitness.com%2Fblog%2Fare-you-making-these-mistakes-with-your-sleep%2F%3FId%3D2815619%26utm_source%3Drebellion%26utm_medium%3Demail%26utm_term%3Dguide_to_sleep%26utm_content%3Dbutton%26utm_campaign%3Dblog_blast%26inf_contact_key%3D3adab33022fb0c7c0ba2d0996df982b56844fcd1a35a326ef37e2a26408e3ff1%7C%7C%7Crf%3D%28none%29; sbjs_current=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; sbjs_migrations=1418474375998%3D1; sbjs_first=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; tk_ai=woo%3ATbML%2BYDuCv5Vy7jbR%2Bd3i%2Fe0; ips4_ipsTimezone=Europe/Stockholm; sbjs_udata=vst%3D196%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F80.0.3987.149%20Safari%2F537.36; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150; ips4_hasJS=true; ct_checkjs=34a36db6c04aeab9500d235f076558c9; ct_prev_referer=https%3A%2F%2Frebellion.nerdfitness.com%2Findex.php%3F%2Ftopic%2F115008-avatar-the-last-darebender-darebee-pvp-challenge%2Fpage%2F4%2F; ct_ps_timestamp=1585352131; ct_timezone=1; ct_pointer_data=%5B%5B868%2C1022%2C1458%5D%2C%5B884%2C918%2C1503%5D%2C%5B916%2C692%2C2213%5D%2C%5B898%2C634%2C2741%5D%2C%5B851%2C638%2C3049%5D%2C%5B845%2C437%2C3305%5D%2C%5B819%2C543%2C3606%5D%2C%5B845%2C651%2C4090%5D%2C%5B786%2C381%2C4207%5D%2C%5B821%2C309%2C4508%5D%5D; ct_fkp_timestamp=1585352136' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=63d26fcffd5f11b3f6b9940b12383571&comment_value=%3Cp%3E%0D%0A%09This+Pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'authority: rebellion.nerdfitness.com' \
+  -H 'pragma: no-cache' \
+  -H 'cache-control: no-cache' \
+  -H 'accept: text/html, */*; q=0.01' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'x-requested-with: XMLHttpRequest' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'dnt: 1' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'origin: https://rebellion.nerdfitness.com' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'referer: https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/' \
+  -H 'accept-language: sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_ebsGlobalMessage_dismissed=1; ips4_device_key=9f187ab2de76d1b8dd381e7105bc8727; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; _ga=GA1.2.103037421.1538498744; _ga=GA1.3.103037421.1538498744; __cfduid=d28f2fac0ad5c9ddf68a44285773126cd1562662135; wordpress_logged_in_c32dc14891d50c1d65670882ea4f6cf5=tobbe%7C1608700843%7CP6KzK1VspbHNUeN1tdQSwYhTtlzLkuKhGoB8CPwCgEv%7C815d29cf9d39ed16de18c2e1a86b1cd8d9f7665d3348eaeb4522bbc8f7ff7baa; _gcl_au=1.1.1499045554.1577628994; _fbp=fb.1.1577628994723.928864349; ips4_loggedIn=1; sbjs_current_add=fd%3D2020-01-29%2010%3A06%3A54%7C%7C%7Cep%3Dhttps%3A%2F%2Fwww.nerdfitness.com%2Fblog%2Fare-you-making-these-mistakes-with-your-sleep%2F%3FId%3D2815619%26utm_source%3Drebellion%26utm_medium%3Demail%26utm_term%3Dguide_to_sleep%26utm_content%3Dbutton%26utm_campaign%3Dblog_blast%26inf_contact_key%3D3adab33022fb0c7c0ba2d0996df982b56844fcd1a35a326ef37e2a26408e3ff1%7C%7C%7Crf%3D%28none%29; sbjs_current=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; sbjs_migrations=1418474375998%3D1; sbjs_first=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; tk_ai=woo%3ATbML%2BYDuCv5Vy7jbR%2Bd3i%2Fe0; ips4_ipsTimezone=Europe/Stockholm; sbjs_udata=vst%3D196%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F80.0.3987.149%20Safari%2F537.36; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150; ips4_hasJS=true; ct_checkjs=34a36db6c04aeab9500d235f076558c9; ct_prev_referer=https%3A%2F%2Frebellion.nerdfitness.com%2Findex.php%3F%2Ftopic%2F115008-avatar-the-last-darebender-darebee-pvp-challenge%2Fpage%2F4%2F; ct_ps_timestamp=1585352745; ct_timezone=1; ct_pointer_data=%5B%5B780%2C316%2C435%5D%2C%5B848%2C444%2C602%5D%2C%5B892%2C538%2C903%5D%5D; ct_fkp_timestamp=1585352748' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=9415b4a89fc30f83f5535fd540b75a91&comment_value=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+
+
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'referer: https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_ebsGlobalMessage_dismissed=1; ips4_device_key=9f187ab2de76d1b8dd381e7105bc8727; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; _ga=GA1.2.103037421.1538498744; _ga=GA1.3.103037421.1538498744; __cfduid=d28f2fac0ad5c9ddf68a44285773126cd1562662135; wordpress_logged_in_c32dc14891d50c1d65670882ea4f6cf5=tobbe%7C1608700843%7CP6KzK1VspbHNUeN1tdQSwYhTtlzLkuKhGoB8CPwCgEv%7C815d29cf9d39ed16de18c2e1a86b1cd8d9f7665d3348eaeb4522bbc8f7ff7baa; _gcl_au=1.1.1499045554.1577628994; _fbp=fb.1.1577628994723.928864349; ips4_loggedIn=1; sbjs_current_add=fd%3D2020-01-29%2010%3A06%3A54%7C%7C%7Cep%3Dhttps%3A%2F%2Fwww.nerdfitness.com%2Fblog%2Fare-you-making-these-mistakes-with-your-sleep%2F%3FId%3D2815619%26utm_source%3Drebellion%26utm_medium%3Demail%26utm_term%3Dguide_to_sleep%26utm_content%3Dbutton%26utm_campaign%3Dblog_blast%26inf_contact_key%3D3adab33022fb0c7c0ba2d0996df982b56844fcd1a35a326ef37e2a26408e3ff1%7C%7C%7Crf%3D%28none%29; sbjs_current=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; sbjs_migrations=1418474375998%3D1; sbjs_first=typ%3Dutm%7C%7C%7Csrc%3Drebellion%7C%7C%7Cmdm%3Demail%7C%7C%7Ccmp%3Dblog_blast%7C%7C%7Ccnt%3Dbutton%7C%7C%7Cid%3D%28none%29%7C%7C%7Ctrm%3Dguide_to_sleep%7C%7C%7Cmtke%3D%28none%29; tk_ai=woo%3ATbML%2BYDuCv5Vy7jbR%2Bd3i%2Fe0; ips4_ipsTimezone=Europe/Stockholm; sbjs_udata=vst%3D196%7C%7C%7Cuip%3D%28none%29%7C%7C%7Cuag%3DMozilla%2F5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F80.0.3987.149%20Safari%2F537.36; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150; ips4_hasJS=true; ct_checkjs=34a36db6c04aeab9500d235f076558c9; ct_prev_referer=https%3A%2F%2Frebellion.nerdfitness.com%2Findex.php%3F%2Ftopic%2F115008-avatar-the-last-darebender-darebee-pvp-challenge%2Fpage%2F4%2F; ct_ps_timestamp=1585352745; ct_timezone=1; ct_pointer_data=%5B%5B780%2C316%2C435%5D%2C%5B848%2C444%2C602%5D%2C%5B892%2C538%2C903%5D%5D; ct_fkp_timestamp=1585352748' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=9415b4a89fc30f83f5535fd540b75a91&comment_value=%3Cp%3E%0D%0A%09This+Pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'referer: https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; __cfduid=d28f2fac0ad5c9ddf68a44285773126cd1562662135; ips4_loggedIn=1; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=9415b4a89fc30f83f5535fd540b75a91&comment_value=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+# Known good
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'referer: https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/page/4/' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; __cfduid=d28f2fac0ad5c9ddf68a44285773126cd1562662135; ips4_loggedIn=1; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=9415b4a89fc30f83f5535fd540b75a91&comment_value=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+
+# Known good
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; ips4_loggedIn=1; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&MAX_FILE_SIZE=25165824&plupload=9415b4a89fc30f83f5535fd540b75a91&comment_value=%3Cp%3E%0D%0A%09this+pvp+was+a+lot+of+fun.+anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+sunday%2fmonday%3f+i%26%2339%3bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A&comment_value_upload=e3ea01296cfe262e87f936bc3326cffe&comment_edit_reason=&comment_log_edit=0' \
+  --compressed
+
+
+
+ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0;
+ips4_member_id=74540;
+ips4_login_key=169f0afd02b4df4c75bc599739aff904;
+ips4_loggedIn=1;
+cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150'
+
+
+curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'cookie: ips4_IPSSessionFront=v9kg1sbk39rhbd95cda7santf0; ips4_member_id=74540; ips4_login_key=169f0afd02b4df4c75bc599739aff904; ips4_loggedIn=1; cf_clearance=4308ea8213516d369d4cf5e36582a99ab052ab80-1585313511-0-150' \
+  --data $'form_submitted=1&csrfKey=9d04ae0a7391c3d75bf4a099b78cdda7&comment_value=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A' \
+  --compressed
+
+
+  https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=findComment&comment=2582077
+getNamedInputValue(htmlString, "csrfKey");=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A' \
+This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday%2FMonday%3F I%26%2339%3Bd be very happy to set up a new thread for it
