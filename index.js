@@ -3,8 +3,8 @@
 // https://github.com/request/request-promise#api-in-detail
 
 const fs = require('fs');
-const secrets = require('./secrets.json');
 const common = require('./common');
+const login = require('./login');
 
 // var tough = require('tough-cookie');
 // var jar = new tough.CookieJar();
@@ -88,57 +88,10 @@ function updatepost(scraper, csrfKey) {
     });
 }
 
-function login() {
-  return new Promise((resolve, reject) => {
-    cloudscraper
-      .get("https://rebellion.nerdfitness.com/login/")
-      .then(htmlString => {
-        const csrfToken = common.getNamedInputValue(htmlString, "csrfKey");
-        console.log('login csrfToken', csrfToken);
-
-        cloudscraper
-          .post("https://rebellion.nerdfitness.com/login/", {
-            form: {
-              csrfKey: csrfToken,
-              auth: secrets.USERNAME,
-              password: secrets.PASSWORD,
-              _processLogin: "usernamepassword",
-              remember_me: 0,
-            },
-          })
-          .then(htmlString => {
-            fs.writeFile('./login_response', htmlString, (err) => {
-              if (err) throw err;
-              console.log('file written (login response)');
-            });
-            const csrfTokenLoggedIn = htmlString.match(/csrfKey=(.+?)["&]/)[1];
-            console.log('csrfTokenLoggedIn', csrfTokenLoggedIn);
-            resolve("logged in");
-
-          })
-          .catch(e => {
-            console.log("inner error");
-            console.log("e", e);
-            reject("FAIL");
-          });
-      })
-      .catch(e => {
-        if (e instanceof CaptchaError) {
-          console.log('captcha :(');
-          // console.log(e.response.body.toString('utf8'));
-        } else {
-          console.log("error");
-          console.log("e", e);
-        }
-        reject("FAIL");
-      });
-  });
-}
-
 (async () => {
   try {
     console.log("before login");
-    await login();
+    await login(cloudscraper);
     console.log("after login");
     const csrf = await loadPost();
     console.log('csrf from loaded post', csrf);
