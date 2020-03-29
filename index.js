@@ -55,10 +55,6 @@ function updatepost(scraper, csrfKey) {
       );
 
       console.log("got ids", plupload, comment_value_upload);
-      fs.writeFile('./get_updatepost.html', htmlString, (err) => {
-        if (err) throw err;
-        console.log('The file has been saved!');
-      });
 
       // comment_value: "<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
       scraper
@@ -69,17 +65,13 @@ function updatepost(scraper, csrfKey) {
               form_submitted: 1,
               csrfKey,
               // comment_value: "Test",
-              comment_value: "<p>This PvP was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
+              comment_value: "<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
             },
           }
         )
         .then(postResponse => {
           console.log("post update done");
           console.log(postResponse.substr(0, 500));
-          fs.writeFile('./post_updatepost.html', postResponse, (err) => {
-            if (err) throw err;
-            console.log('file written (post response)');
-          });
         })
         .catch(e => {
           console.log("post update error");
