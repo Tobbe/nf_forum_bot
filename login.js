@@ -1,16 +1,19 @@
 const secrets = require('./secrets.json');
-const NF_URL = 'https://rebellion.nerdfitness.com';
+const common = require('./common');
 
 module.exports = function login(cloudscraper) {
     return new Promise((resolve, reject) => {
         cloudscraper
-            .get(NF_URL + '/login/')
+            .get(common.NF_URL + '/login/')
             .then(htmlString => {
-                const csrfToken = getNamedInputValue(htmlString, 'csrfKey');
+                const csrfToken = common.getNamedInputValue(
+                    htmlString,
+                    'csrfKey'
+                );
                 console.log('login csrfToken', csrfToken);
 
                 cloudscraper
-                    .post(NF_URL + '/login/', {
+                    .post(common.NF_URL + '/login/', {
                         form: {
                             csrfKey: csrfToken,
                             auth: secrets.USERNAME,

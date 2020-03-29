@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const secrets = require('./secrets.json');
+const common = require('./common');
 
 // var tough = require('tough-cookie');
 // var jar = new tough.CookieJar();
@@ -18,9 +19,6 @@ var jar = cloudscraper.jar(new CookieStore('./cookie.json'));
 // fs.writeFileSync('./headers.json', JSON.stringify(headers), 'utf-8');
 cloudscraper = cloudscraper.defaults({ jar, headers: require('./headers') });
 
-const NF_URL = 'https://rebellion.nerdfitness.com/';
-const NF_TOPIC_URL = NF_URL + 'index.php?/topic/';
-
 function captchaHandler(_options, { captcha }) {
   // Here you do some magic with the siteKey provided by cloudscraper
   console.error('The url is "' + captcha.uri.href + '"');
@@ -33,16 +31,11 @@ function captchaHandler(_options, { captcha }) {
 
 cloudscraper = cloudscraper.defaults({ onCaptcha: captchaHandler });
 
-function getNamedInputValue(htmlString, name) {
-  const input = htmlString.match(new RegExp(`<input .*?name="${name}".*?>`))[0];
-  return input.match(/value="([^"]+)"/)[1];
-}
-
 function loadPost() {
   return cloudscraper
-    .get(NF_TOPIC_URL + '115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=findComment&comment=2582077')
+    .get(common.NF_TOPIC_URL + '/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=findComment&comment=2582077')
     .then(htmlString => {
-      const csrfKey = getNamedInputValue(htmlString, 'csrfKey');
+      const csrfKey = common.getNamedInputValue(htmlString, 'csrfKey');
       console.log('post csrfKey', csrfKey);
       return csrfKey;
     })
@@ -51,12 +44,12 @@ function loadPost() {
 function updatepost(scraper, csrfKey) {
   scraper
     .get(
-      "https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077&csrfKey=" +
+      common.NF_TOPIC_URL + '/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077&csrfKey=' +
         csrfKey
     )
     .then(htmlString => {
-      const plupload = getNamedInputValue(htmlString, "plupload");
-      const comment_value_upload = getNamedInputValue(
+      const plupload = common.getNamedInputValue(htmlString, "plupload");
+      const comment_value_upload = common.getNamedInputValue(
         htmlString,
         "comment_value_upload"
       );
@@ -70,13 +63,13 @@ function updatepost(scraper, csrfKey) {
       // comment_value: "<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
       scraper
         .post(
-          "https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077",
+          common.NF_TOPIC_URL + "/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077",
           {
             form: {
               form_submitted: 1,
               csrfKey,
               // comment_value: "Test",
-              comment_value: "<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
+              comment_value: "<p>This PvP was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
             },
           }
         )
@@ -100,7 +93,7 @@ function login() {
     cloudscraper
       .get("https://rebellion.nerdfitness.com/login/")
       .then(htmlString => {
-        const csrfToken = getNamedInputValue(htmlString, "csrfKey");
+        const csrfToken = common.getNamedInputValue(htmlString, "csrfKey");
         console.log('login csrfToken', csrfToken);
 
         cloudscraper
