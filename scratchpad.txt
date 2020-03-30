@@ -386,3 +386,71 @@ curl 'https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-
   https://rebellion.nerdfitness.com/index.php?/topic/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=findComment&comment=2582077
 getNamedInputValue(htmlString, "csrfKey");=%3Cp%3E%0D%0A%09This+pvp+was+a+lot+of+fun.+Anyone+want+to+go+another+round+for+when+the+next+challenge+starts+at+Sunday%2FMonday%3F+I%26%2339%3Bd+be+very+happy+to+set+up+a+new+thread+for+it\u0021%0D%0A%3C%2Fp%3E%0D%0A' \
 This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday%2FMonday%3F I%26%2339%3Bd be very happy to set up a new thread for it
+
+
+
+
+
+
+
+
+############
+# New post #
+############
+
+fetch(
+    "https://rebellion.nerdfitness.com/index.php?/topic/116148-dailydare-nf-edition/",
+    {
+        "credentials":"include",
+        "headers":{"accept":"*/*","accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5","cache-control":"no-cache","content-type":"application/x-www-form-urlencoded; charset=UTF-8","pragma":"no-cache","sec-fetch-dest":"empty","sec-fetch-mode":"cors","sec-fetch-site":"same-origin","x-requested-with":"XMLHttpRequest"},
+        "referrer":"https://rebellion.nerdfitness.com/index.php?/topic/116148-dailydare-nf-edition/",
+        "referrerPolicy":"no-referrer-when-downgrade",
+        "body":"commentform_116148_submitted=1&csrfKey=37f35b0d388394d3dddba897b8552513&_contentReply=1&MAX_FILE_SIZE=25165824&plupload=1a45522d7a81da904599764a202b5daa&topic_comment_116148=%3Cp%3E%0D%0A%09Post+reserved+for+keeping+score%0D%0A%3C%2Fp%3E%0D%0A&topic_comment_116148_upload=2b20c817d6b7c8f3a20cd729d10b3e2e&topic_auto_follow=0&topic_auto_follow_checkbox=1&hide=0&currentPage=1&_lastSeenID=2582734",
+        "method":"POST","mode":"cors"
+    });
+
+commentform_116148_submitted: 1
+csrfKey: 37f35b0d388394d3dddba897b8552513
+_contentReply: 1
+MAX_FILE_SIZE: 25165824
+plupload: 1a45522d7a81da904599764a202b5daa
+topic_comment_116148: <p>
+	Post reserved for keeping score
+</p>
+topic_comment_116148_upload: 2b20c817d6b7c8f3a20cd729d10b3e2e
+topic_auto_follow: 0
+topic_auto_follow_checkbox: 1
+hide: 0
+currentPage: 1
+_lastSeenID: 2582734
+
+
+
+##############
+# Post image #
+##############
+
+fetch("https://rebellion.nerdfitness.com/index.php?/topic/116148-dailydare-nf-edition/",
+    {
+        "credentials":"include",
+        "headers":{"accept":"*/*","accept-language":"sv,en-US;q=0.9,en;q=0.8,en-GB;q=0.7,da;q=0.6,nb;q=0.5","cache-control":"no-cache","content-type":"application/x-www-form-urlencoded; charset=UTF-8","pragma":"no-cache","sec-fetch-dest":"empty","sec-fetch-mode":"cors","sec-fetch-site":"same-origin","x-requested-with":"XMLHttpRequest"},
+        "referrer":"https://rebellion.nerdfitness.com/index.php?/topic/116148-dailydare-nf-edition/",
+        "referrerPolicy":"no-referrer-when-downgrade",
+        "body":"commentform_116148_submitted=1&csrfKey=37f35b0d388394d3dddba897b8552513&_contentReply=1&MAX_FILE_SIZE=25165824&plupload=1a45522d7a81da904599764a202b5daa&topic_comment_116148=%3Cp%3E%0D%0A%09%3Cimg+data-loaded%3D%22true%22+data-ratio%3D%22141.51%22+src%3D%22https%3A%2F%2Fdarebee.com%2Fimages%2Fdailydare%2F2020%2Fmarch29.jpg%22+width%3D%22930%22%3E%0D%0A%3C%2Fp%3E%0D%0A&topic_comment_116148_upload=2b20c817d6b7c8f3a20cd729d10b3e2e&topic_auto_follow=0&topic_auto_follow_checkbox=1&hide=0&currentPage=1&_lastSeenID=2582735",
+        "method":"POST","mode":"cors"
+    });
+
+commentform_116148_submitted: 1
+csrfKey: 37f35b0d388394d3dddba897b8552513
+_contentReply: 1
+MAX_FILE_SIZE: 25165824
+plupload: 1a45522d7a81da904599764a202b5daa
+topic_comment_116148: <p>
+	<img data-loaded="true" data-ratio="141.51" src="https://darebee.com/images/dailydare/2020/march29.jpg" width="930">
+</p>
+topic_comment_116148_upload: 2b20c817d6b7c8f3a20cd729d10b3e2e
+topic_auto_follow: 0
+topic_auto_follow_checkbox: 1
+hide: 0
+currentPage: 1
+_lastSeenID: 2582735
