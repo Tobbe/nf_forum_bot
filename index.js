@@ -2,9 +2,9 @@
 
 // https://github.com/request/request-promise#api-in-detail
 
-const fs = require('fs');
 const common = require('./common');
 const login = require('./login');
+const updatePost = require('./updatePost');
 
 // var tough = require('tough-cookie');
 // var jar = new tough.CookieJar();
@@ -44,55 +44,23 @@ function loadPost() {
         });
 }
 
-function updatepost(scraper, csrfKey) {
-    scraper
-        .get(
-            common.NF_TOPIC_URL +
-                '/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077&csrfKey=' +
-                csrfKey
-        )
-        .then(htmlString => {
-            const plupload = common.getNamedInputValue(htmlString, 'plupload');
-            const comment_value_upload = common.getNamedInputValue(
-                htmlString,
-                'comment_value_upload'
-            );
-
-            console.log('got ids', plupload, comment_value_upload);
-
-            // comment_value: "<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>",
-            scraper
-                .post(
-                    common.NF_TOPIC_URL +
-                        '/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=editComment&comment=2582077',
-                    {
-                        form: {
-                            form_submitted: 1,
-                            csrfKey,
-                            comment_value:
-                                '<p>This pvp was a lot of fun. Anyone want to go another round for when the next challenge starts at Sunday/Monday? I&#39;d be very happy to set up a new thread for it.</p>',
-                        },
-                    }
-                )
-                .then(postResponse => {
-                    console.log('post update done');
-                    console.log(postResponse.substr(0, 500));
-                })
-                .catch(e => {
-                    console.log('post update error');
-                    console.log('e', e.substr(0, 500));
-                });
-        });
-}
-
 (async () => {
     try {
         console.log('before login');
-        await login(cloudscraper);
+        const csrfKey = await login(cloudscraper);
         console.log('after login');
-        const csrf = await loadPost();
-        console.log('csrf from loaded post', csrf);
-        updatepost(cloudscraper, csrf);
+        // const csrf = await loadPost();
+        console.log('csrf from login post', csrfKey);
+        await updatePost(
+            cloudscraper,
+            csrfKey,
+            '115008-avatar-the-last-darebender-darebee-pvp-challenge',
+            '2582077',
+            '<p>This PvP was a lot of fun. Anyone want to go another round ' +
+            'for when the next challenge starts at Sunday/Monday? I&#39;d ' +
+            'be very happy to set up a new thread for it!</p>'
+        );
+        console.log('all done');
     } catch (e) {
         console.log('some kind of error');
         console.log('e', e);
