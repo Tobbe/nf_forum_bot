@@ -2,7 +2,6 @@
 
 // https://github.com/request/request-promise#api-in-detail
 
-const common = require('./common');
 const login = require('./login');
 const updatePost = require('./updatePost');
 const loadThread = require('./loadThread');
@@ -23,6 +22,7 @@ cloudscraper = cloudscraper.defaults({ jar, headers: require('./headers') });
 
 function captchaHandler(_options, { captcha }) {
     // Here you do some magic with the siteKey provided by cloudscraper
+    console.log('captca challenge :(');
     console.error('The url is "' + captcha.uri.href + '"');
     console.error('The site key is "' + captcha.siteKey + '"');
     const token = '';
@@ -32,19 +32,6 @@ function captchaHandler(_options, { captcha }) {
 }
 
 cloudscraper = cloudscraper.defaults({ onCaptcha: captchaHandler });
-
-function loadPost() {
-    return cloudscraper
-        .get(
-            common.NF_TOPIC_URL +
-                '/115008-avatar-the-last-darebender-darebee-pvp-challenge/&do=findComment&comment=2582077'
-        )
-        .then(htmlString => {
-            const csrfKey = common.getNamedInputValue(htmlString, 'csrfKey');
-            console.log('post csrfKey', csrfKey);
-            return csrfKey;
-        });
-}
 
 function calculateScores(posts) {
     // First two posts are just info posts. No scores in those (but there
@@ -118,28 +105,6 @@ async function updateScores() {
             '116148-dailydare-nerdfitness-edition',
             '2582735',
             message
-        );
-        console.log('all done');
-    } catch (e) {
-        console.log('some kind of error');
-        console.log('e', e);
-    }
-}
-
-async function postNewChallenge() {
-    try {
-        console.log('before login');
-        const csrfKey = await login(cloudscraper);
-        console.log('after login');
-        console.log('csrf from login post', csrfKey);
-        await updatePost(
-            cloudscraper,
-            csrfKey,
-            '115008-avatar-the-last-darebender-darebee-pvp-challenge',
-            '2582077',
-            '<p>This PvP was a lot of fun. Anyone want to go another round ' +
-                'for when the next challenge starts at Sunday/Monday? I&#39;d ' +
-                'be very happy to set up a new thread for it!</p>'
         );
         console.log('all done');
     } catch (e) {
