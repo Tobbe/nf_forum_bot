@@ -138,6 +138,28 @@ async function newPost(cloudscraper, csrfKey, thread, message) {
 }
 
 async function postNewChallenge() {
+    const d = new Date();
+    const months = [
+        'january',
+        'february',
+        'march',
+        'april',
+        'may',
+        'june',
+        'july',
+        'august',
+        'september',
+        'october',
+        'november',
+        'december',
+    ];
+    const year = d.getFullYear();
+    const month = months[d.getMonth()];
+    const dayOfMonth = d.getDate();
+    const imgSrc =
+        'https://darebee.com/images/dailydare/' +
+        `${year}/${month}${dayOfMonth}.jpg`;
+
     try {
         console.log('before login');
         const csrfKey = await login(cloudscraper);
@@ -151,7 +173,7 @@ async function postNewChallenge() {
                 <img
                     data-loaded="true"
                     data-ratio="141.51"
-                    src="https://darebee.com/images/dailydare/2020/april1.jpg"
+                    src="${imgSrc}"
                     width="930">
                 </img>
             </p>`
