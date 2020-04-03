@@ -50,24 +50,38 @@ function calculateScores(posts) {
     // First two posts are just info posts. No scores in those (but there
     // are false positives)
     return posts.slice(2).reduce((scores, post) => {
-        let score = scores[post.author.id] ? scores[post.author.id].score : 0;
+        if (!scores[post.author.id]) {
+            scores[post.author.id] = {
+                name: post.author.name,
+                score: 0,
+                completedChallenges: 0,
+            };
+        }
+        let score = scores[post.author.id].score;
+        let completedChallenges = scores[post.author.id].completedChallenges;
+
+        console.log('score before', score);
 
         const $ = cheerio.load(post.message);
         $('blockquote').remove();
         const message = $('body').html();
         console.log('message without quotes', message);
 
-        if (message.includes('&#x2714;')) {
-            score += 2;
-        }
+        const completedChallengesInPost = (message.match(/&#x2714;/g) || [])
+            .length;
 
-        if (message.includes('&#x1F41D;')) {
-            score += 1;
-        }
+        console.log('completedChallengesInPost', completedChallengesInPost);
+        completedChallenges += completedChallengesInPost;
+
+        score += completedChallengesInPost * 2;
+        score += (message.match(/&#x1F41D;/g) || []).length;
+
+        console.log('score', score);
 
         scores[post.author.id] = {
             name: post.author.name,
             score,
+            completedChallenges,
         };
 
         return scores;
@@ -97,6 +111,7 @@ async function updateScores() {
         const scores = calculateScores(posts);
         console.log('scores', scores);
         const message = formatScores(scores);
+        console.log('message', message);
         await updatePost(
             cloudscraper,
             csrfKey,
