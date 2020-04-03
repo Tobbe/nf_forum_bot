@@ -47,35 +47,35 @@ function loadPost() {
 }
 
 function calculateScores(posts) {
-  // First two posts are just info posts. No scores in those (but there
-  // are false positives)
-  return posts.slice(2).reduce((scores, post) => {
-    let score = scores[post.author.id] ? scores[post.author.id].score : 0;
+    // First two posts are just info posts. No scores in those (but there
+    // are false positives)
+    return posts.slice(2).reduce((scores, post) => {
+        let score = scores[post.author.id] ? scores[post.author.id].score : 0;
 
-    const $ = cheerio.load(post.message);
-    $('blockquote').remove();
-    const message = $('body').html();
-    console.log('message without quotes', message);
+        const $ = cheerio.load(post.message);
+        $('blockquote').remove();
+        const message = $('body').html();
+        console.log('message without quotes', message);
 
-    if (message.includes('&#x2714;')) {
-      score += 2;
-    }
+        if (message.includes('&#x2714;')) {
+            score += 2;
+        }
 
-    if (message.includes('&#x1F41D;')) {
-      score += 1;
-    }
+        if (message.includes('&#x1F41D;')) {
+            score += 1;
+        }
 
-    scores[post.author.id] = {
-      name: post.author.name,
-      score,
-    };
+        scores[post.author.id] = {
+            name: post.author.name,
+            score,
+        };
 
-    return scores;
-  }, {})
+        return scores;
+    }, {});
 }
 
 function formatScores(scores) {
-  return `
+    return `
       <p>Current scores</p>
       <pre class="ipsCode">${JSON.stringify(scores, null, 4)}</pre>
       <p>
